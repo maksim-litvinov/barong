@@ -29,6 +29,7 @@ module API
       mount API::V1::Phones
       mount API::V1::Sessions
       mount API::V1::Labels
+      mount API::V1::Keypairs
 
       add_swagger_documentation base_path: '/api',
                                 info: {

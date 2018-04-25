@@ -16,6 +16,7 @@ class Account < ApplicationRecord
   has_many :phones, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :labels
+  has_many :keypairs
 
   before_validation :assign_uid
 
