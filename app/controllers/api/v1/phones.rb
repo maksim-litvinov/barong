@@ -22,6 +22,25 @@ module API
           { message: 'Code was sent successfully' }
         end
 
+        desc 'Resend code to phone_number'
+        params do
+          requires :phone_number, type: String,
+                                  desc: 'Phone number with country code',
+                                  allow_blank: false
+        end
+        post '/resend_code' do
+          declared_params = declared(params)
+          return unless phone_valid?(declared_params[:phone_number])
+
+          phone_number = PhoneUtils.sanitize(declared_params[:phone_number])
+          phone = current_account.phones.find_by!(number: phone_number)
+
+
+
+          PhoneUtils.send_confirmation_sms(phone)
+          { message: 'Code was sent successfully' }
+        end
+
         desc 'Verify a phone'
         params do
           requires :phone_number, type: String,

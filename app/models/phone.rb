@@ -18,6 +18,10 @@ class Phone < ApplicationRecord
     Phone.verified.exists?(number: number)
   end
 
+  def regenerate_code!
+    
+  end
+
 private
 
   def generate_code
