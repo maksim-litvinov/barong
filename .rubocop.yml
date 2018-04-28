@@ -4,6 +4,7 @@ AllCops:
     - ci/bump.rb
     - bin/*
     - config/**/*
+    - spec/support/**/*
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
@@ -55,15 +56,7 @@ Style/StringLiteralsInInterpolation:
   EnforcedStyle: single_quotes
 
 Style/Documentation:
-  Exclude:
-    - spec/**/*
-    - test/**/*
-    - db/**/*
-    - app/controllers/**/*
-    - app/helpers/**/*
-    - app/mailers/**/*
-    - config/application.rb
-    - app/api/**/*
+  Enabled: false
 
 Performance/TimesMap:
   Exclude:

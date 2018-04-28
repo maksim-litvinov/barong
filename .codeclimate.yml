@@ -7,6 +7,22 @@ plugins:
   reek:
     enabled: true
     checks:
+      TooManyStatements:
+        max_statements: 10
+      UncommunicativeMethodName:
+        enabled: false
+      UncommunicativeParameterName:
+        enabled: false
+      UncommunicativeVariableName:
+        enabled: false
+      TooManyStatements:
+        max_statements: 10
+      PrimaDonnaMethod:
+        enabled: false
+      DuplicateMethodCall:
+        enabled: false
+      ControlParameter:
+        enabled: false
       FeatureEnvy:
         enabled: false
       RepeatedConditional:
@@ -38,4 +54,5 @@ exclude_patterns:
   - ci/bump.rb
   - node_modules/
   - vendor/
-  - config/initializers/*
+  - config/**/*
+  - app/api/management_api/**/*
