@@ -12,8 +12,13 @@ module UserApi
       default_format :json
 
       helpers V1::Helpers
+      include V1::Constraints
 
       do_not_route_options!
+
+      ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
+        puts req.inspect
+      end
 
       rescue_from(ActiveRecord::RecordNotFound) { |_e| error!('Record is not found', 404) }
       rescue_from(Vault::VaultError) do |error|

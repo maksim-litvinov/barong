@@ -10,7 +10,12 @@ module UserApi
       def current_account
         @current_account ||= begin
           doorkeeper_authorize!
-          Account.find(doorkeeper_token.resource_owner_id)
+          Account.kept
+                 .find_by(id: doorkeeper_token.resource_owner_id)
+                 .tap do |account|
+            error!('Account does not exist', 401) unless account
+            req.env['user_api.account_uid'] = account.uid
+          end
         end
       end
 
