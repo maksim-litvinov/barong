@@ -2,7 +2,7 @@
 
 module UserApi
   module V1
-    module Constraints
+    module RackAttackThrottle
       class << self
         def included(base)
           apply_rules!
@@ -10,8 +10,8 @@ module UserApi
         end
 
         def apply_rules!
-          Rack::Attack.throttle 'Limit number of calls to API', limit: 6000, period: 5.minutes do |req|
-            req.env['user_api.account_uid']
+          Rack::Attack.throttle 'Limit number of calls to API', limit: 300, period: 5.minutes do |req|
+            req.env['user_api.account_id']
           end
         end
       end
