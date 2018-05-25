@@ -7,7 +7,14 @@ class Profile < ApplicationRecord
 
   belongs_to :account
   serialize :metadata, JSON
-  validates :first_name, :last_name, :dob, :address, :city, :country, presence: true
+  validates :first_name, :last_name, :dob, :address,
+            :city, :country, :postcode, presence: true
+
+  validates :first_name, length: 2..255, format: { with: /\A[A-Za-z\s]+\z/ }
+  validates :last_name, length: 2..255, format: { with: /\A[A-Za-z\s]+\z/ }
+  validates :city, length: 2..255, format: { with: /\A[A-Za-z\s]+\z/ }
+  validates :country, length: 2..255, format: { with: /\A[A-Z]+\z/ }
+  validates :postcode, length: 2..255, format: { with: /\A[-\d]+\z/ }
 
   def full_name
     "#{first_name} #{last_name}"
