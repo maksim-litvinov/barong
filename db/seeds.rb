@@ -8,6 +8,9 @@ seeds = YAML.safe_load(
   ).result
 )
 
+p 'seeds'
+p seeds
+
 logger = Logger.new(STDERR, progname: 'db:seed')
 result = { accounts: [], applications: [] }
 
