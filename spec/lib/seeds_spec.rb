@@ -32,6 +32,7 @@ describe "Seeds task" do
   end
   let(:command) { Rake::Task['db:seed'].invoke }
 
-  it 'creates required models'
+  it 'creates an account'
+    expect { command }.to change { Account.count }.by(1)
   end
 end
