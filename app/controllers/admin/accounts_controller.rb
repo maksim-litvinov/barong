@@ -34,6 +34,12 @@ module Admin
 
     def disable_2fa
       @account.update!(otp_enabled: false)
+      DeviceActivity.create!(
+        action: "2fa_disabled",
+        status: "success",
+        account_id: @account.id,
+        metadata: { disabled_by: current_user.uid }
+      )
       redirect_to action: :show
     end
 

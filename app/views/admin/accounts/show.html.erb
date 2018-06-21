@@ -87,7 +87,7 @@
   <table class="table table-bordered table-striped table-hover table-sm text-center">
     <thead>
     <tr>
-      <th>Device UID</th>
+      <th>Time</th>
       <th>IP</th>
       <th>OS</th>
       <th>User Agent</th>
@@ -95,12 +95,14 @@
       <th>Country</th>
       <th>Action</th>
       <th>Status</th>
+      <th>Device UID</th>
+      <th>Metadata</th>
     </tr>
     </thead>
     <tbody>
     <% @device_activity.each do |activity| %>
       <tr>
-        <td><%= activity.device_uid %></td>
+        <td><%= activity.created_at %></td>
         <td><%= activity.user_ip %></td>
         <td><%= activity.user_os %></td>
         <td><%= activity.user_agent %></td>
@@ -108,6 +110,13 @@
         <td><%= activity.country %></td>
         <td><%= activity.action %></td>
         <td><%= activity.status %></td>
+        <td><%= activity.device_uid %></td>
+        <td>
+            <% activity.metadata.each do |key, value| %>
+              <div><span><%= key %></span>: <span><%= value %></span></div>
+            <% end %>
+          <%=  %>
+        </td>
       </tr>
     <% end %>
     </tbody>

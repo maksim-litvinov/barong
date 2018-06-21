@@ -10,6 +10,7 @@ class CreateDeviceActivity < ActiveRecord::Migration[5.1]
       t.string :country
       t.string :action, null: false, index: true
       t.string :status, null: false, index: true
+      t.text :metadata
 
       t.timestamps
     end

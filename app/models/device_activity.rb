@@ -8,6 +8,7 @@ class DeviceActivity < ApplicationRecord
 
   validates :account_id, :action, :status, presence: true
   belongs_to :account
+  serialize :metadata, JSON
 
   acts_as_eventable prefix: 'device_activity', on: %i[create]
 
@@ -19,6 +20,7 @@ class DeviceActivity < ApplicationRecord
       country: country,
       action: action,
       status: status,
+      metadata: metadata,
       created_at: format_iso8601_time(created_at),
     }
   end
@@ -29,23 +31,24 @@ end
 #
 # Table name: device_activity
 #
-#  id         :integer          not null, primary key
-#  account_id :integer          not null
-#  device_uid :string(255)
-#  user_ip    :string(255)      not null
-#  user_os    :string(255)      not null
-#  user_agent :string(255)      not null
-#  country    :string(255)      not null
-#  action     :string(255)      not null
-#  status     :string(255)      not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  account_id   :integer          not null
+#  device_uid   :string(255)
+#  user_ip      :string(255)
+#  user_os      :string(255)
+#  user_agent   :string(255)
+#  user_browser :string(255)
+#  country      :string(255)
+#  action       :string(255)      not null
+#  status       :string(255)      not null
+#  metadata     :text(65535)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 # Indexes
 #
 #  index_device_activity_on_account_id  (account_id)
 #  index_device_activity_on_action      (action)
-#  index_device_activity_on_device_uid  (device_uid)
 #  index_device_activity_on_status      (status)
 #
 # Foreign Keys

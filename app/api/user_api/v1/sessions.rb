@@ -82,7 +82,16 @@ module UserApi
           declared_params = declared(params).symbolize_keys
           generator = SessionJWTGenerator.new(declared_params)
 
-          error!('Payload is invalid', 401) unless generator.verify_payload
+          unless generator.verify_payload
+            create_device_activity!(account_id: account.id,
+                                    action: 'api_key_session',
+                                    status: 'error')
+            error!('Payload is invalid', 401)
+          end
+
+          create_device_activity!(account_id: account.id,
+                                  action: 'api_key_session',
+                                  status: 'success')
           { token: generator.generate_session_jwt }
         rescue JWT::DecodeError => e
           error! "Failed to decode and verify JWT: #{e.inspect}", 401

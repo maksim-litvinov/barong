@@ -12,7 +12,11 @@ module UserApi
             country: country_by_ip(remote_ip),
             user_agent: request.user_agent,
             user_browser: request.browser,
-            user_os: request.os
+            user_os: request.os,
+            metadata: {
+              rack_ip: request.ip,
+              country: country_by_ip(request.ip)
+            }
           }
         end
 

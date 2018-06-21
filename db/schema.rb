@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20180612084542) do
     t.string "country"
     t.string "action", null: false
     t.string "status", null: false
+    t.text "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_device_activity_on_account_id"
