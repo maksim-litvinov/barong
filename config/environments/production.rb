@@ -21,6 +21,9 @@ Rails.application.configure do
   # `config/secrets.yml.key`.
   config.read_encrypted_secrets = true
 
+  config.session_store :cookie_store, key: '_barong_session',
+                                      domain: :all, tld_length: 3
+
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = true

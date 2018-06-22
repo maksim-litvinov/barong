@@ -7,6 +7,10 @@ module UserApi
     module Helpers
       include Doorkeeper::Grape::Helpers
 
+      def session
+        env['rack.session']
+      end
+
       def current_account
         @current_account ||= begin
           doorkeeper_authorize!
