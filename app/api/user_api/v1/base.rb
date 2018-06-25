@@ -40,7 +40,11 @@ module UserApi
         error!('Something went wrong', 500)
       end
 
+      require 'action_dispatch/middleware/remote_ip.rb'
+
+      use ActionDispatch::RemoteIp
       use UserApi::V1::CORS::Middleware
+      use UserApi::V1::Middlewares::DeviceActivityMiddleware
       use ActionDispatch::Session::CookieStore, key: '_barong_session',
                                                 domain: :all, tld_length: 3
       mount UserApi::V1::Accounts

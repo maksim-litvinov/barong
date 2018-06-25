@@ -5,30 +5,45 @@ module Services
     class Error < Grape::Exceptions::Base; end
 
     class << self
-      def sign_in(params:, session:)
+      def sign_in(params:, session:, user_device_activity:)
+        @user_device_activity = user_device_activity
         @account = find_account!(params)
         @application = find_application!(params)
         @device = @account.devices.find_by(uid: session[:device_uid])
 
         unless check_for_otp?
           update_or_create_device!(remember_me: params[:remember_me], session: session)
+          create_device_activity!(status: 'success')
           return create_access_token(expires_in: params[:expires_in])
         end
 
         check_otp!(code: params[:otp_code])
         update_or_create_device!(remember_me: params[:remember_me],
                                  session: session, otp: true)
+        create_device_activity!(status: 'success')
         create_access_token(expires_in: params[:expires_in])
       end
 
     private
 
+    def create_device_activity!(status:, action: 'sign_in')
+      DeviceActivity.create!(
+        @user_device_activity.merge(
+          action: action,
+          status: status,
+          account_id: @account.id
+        )
+      )
+    end
+
       def check_otp!(code:)
         if code.blank?
+          create_device_activity!(status: 'missing OTP')
           error!('The account has enabled 2FA but OTP code is missing', 403)
         end
 
         return if Vault::TOTP.validate?(@account.uid, code)
+        create_device_activity!(status: 'invalid OTP')
         error!('OTP code is invalid', 403)
       end
 
@@ -51,10 +66,12 @@ module Services
         error!('Invalid Email or Password', 401) unless account
 
         unless account.valid_password? params[:password]
+          create_device_activity!(status: 'error')
           error!('Invalid Email or Password', 401)
         end
 
         unless account.active_for_authentication?
+          create_device_activity!(status: 'email is not confirmed')
           error!('You have to confirm your email address before continuing', 401)
         end
 

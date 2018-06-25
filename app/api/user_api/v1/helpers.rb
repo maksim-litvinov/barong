@@ -27,6 +27,16 @@ module UserApi
         doorkeeper_token.application
       end
 
+      def create_device_activity!(account_id:, status:, action: 'sign_in')
+        DeviceActivity.create!(
+          env['user_device_activity'].merge(
+            action: action,
+            status: status,
+            account_id: account_id
+          )
+        )
+      end
+
       def phone_valid?(phone_number)
         phone_number = PhoneUtils.international(phone_number)
 

@@ -22,7 +22,9 @@ module UserApi
         end
 
         post do
-          ::Services::AuthService.sign_in(params: declared(params), session: session)
+          ::Services::AuthService.sign_in(params: declared(params),
+                                          session: session,
+                                          user_device_activity: env['user_device_activity'])
         end
 
         desc 'Validates client jwt and generates peatio session jwt',
@@ -39,8 +41,17 @@ module UserApi
           status 200
           declared_params = declared(params).symbolize_keys
           generator = ::Services::SessionJWTGenerator.new declared_params
-          error!('Payload is invalid', 401) unless generator.verify_payload
 
+          unless generator.verify_payload
+            create_device_activity!(account_id: account.id,
+                                    action: 'api_key_session',
+                                    status: 'error')
+            error!('Payload is invalid', 401)
+          end
+
+          create_device_activity!(account_id: account.id,
+                                  action: 'api_key_session',
+                                  status: 'success')
           { token: generator.generate_session_jwt }
         rescue JWT::DecodeError => e
           error! "Failed to decode and verify JWT: #{e.inspect}", 401

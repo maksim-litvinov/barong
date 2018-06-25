@@ -29,16 +29,35 @@ describe 'Session create test' do
              otp_enabled: otp_enabled
     end
     let(:otp_enabled) { false }
+    let(:user_agent) do
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+    end
 
     context 'With valid params' do
+<<<<<<< HEAD
       let(:do_request) { post uri, params: params }
       let(:remember_me) { nil }
+=======
+      let(:do_request) { post uri, params: params, headers: { 'HTTP_USER_AGENT' => user_agent } }
+>>>>>>> feature/login_history
       let(:params) do
         {
           email: email,
           password: password,
           application_id: application.uid,
           remember_me: remember_me
+        }
+      end
+      let(:expected_device_activity) do
+        {
+          action: 'sign_in',
+          status: 'success',
+          account_id: anything,
+          user_ip: '127.0.0.1',
+          country: 'unknown',
+          user_agent: user_agent,
+          user_browser: 'Chrome',
+          user_os: 'Linux'
         }
       end
 
@@ -52,6 +71,7 @@ describe 'Session create test' do
         expect(response.status).to eq(201)
       end
 
+<<<<<<< HEAD
       it 'does not create any device by default' do
         expect { do_request }.to_not change { Device.count }
       end
@@ -85,6 +105,13 @@ describe 'Session create test' do
           expect(response.status).to eq(201)
         end
       end
+=======
+      it 'creates a device activity' do
+        expect { do_request }.to change { DeviceActivity.count }.by(1)
+        expect(DeviceActivity.first.attributes.symbolize_keys).to include expected_device_activity
+      end
+
+>>>>>>> feature/login_history
 
       context 'when account has enabled 2FA' do
         before do
