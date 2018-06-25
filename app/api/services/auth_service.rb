@@ -38,7 +38,9 @@ module Services
         }
         device_params[:check_otp_time] = 30.days.from_now if otp
         return @device&.update!(device_params) if @device
-        return unless remember_me
+
+        # TODO: Skip for testing. Frontend does not have his feature
+        # return unless remember_me
 
         device = @account.devices.create!(device_params)
         session[:device_uid] = device.uid
