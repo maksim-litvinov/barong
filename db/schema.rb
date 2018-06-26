@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20180622112652) do
-=======
-ActiveRecord::Schema.define(version: 20180612084542) do
->>>>>>> feature/login_history
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "uid", null: false
@@ -61,15 +57,6 @@ ActiveRecord::Schema.define(version: 20180612084542) do
     t.index ["account_id"], name: "index_api_keys_on_account_id"
   end
 
-<<<<<<< HEAD
-  create_table "devices", primary_key: "uid", id: :string, limit: 36, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "account_id", null: false
-    t.datetime "last_sign_in"
-    t.datetime "check_otp_time"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_devices_on_account_id"
-=======
   create_table "device_activity", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "account_id", null: false
     t.string "device_uid"
@@ -86,7 +73,15 @@ ActiveRecord::Schema.define(version: 20180612084542) do
     t.index ["account_id"], name: "index_device_activity_on_account_id"
     t.index ["action"], name: "index_device_activity_on_action"
     t.index ["status"], name: "index_device_activity_on_status"
->>>>>>> feature/login_history
+  end
+
+  create_table "devices", primary_key: "uid", id: :string, limit: 36, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "account_id", null: false
+    t.datetime "last_sign_in"
+    t.datetime "check_otp_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_devices_on_account_id"
   end
 
   create_table "documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -203,11 +198,8 @@ ActiveRecord::Schema.define(version: 20180612084542) do
   end
 
   add_foreign_key "api_keys", "accounts"
-<<<<<<< HEAD
-  add_foreign_key "devices", "accounts"
-=======
   add_foreign_key "device_activity", "accounts"
->>>>>>> feature/login_history
+  add_foreign_key "devices", "accounts"
   add_foreign_key "documents", "accounts"
   add_foreign_key "labels", "accounts", on_delete: :cascade
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

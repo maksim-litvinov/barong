@@ -7,7 +7,7 @@ class Website < ApplicationRecord
 end
 
 # == Schema Information
-# Schema version: 20180516142429
+# Schema version: 20180622112652
 #
 # Table name: websites
 #
