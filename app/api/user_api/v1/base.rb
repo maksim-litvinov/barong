@@ -40,6 +40,16 @@ module UserApi
         error!('Something went wrong', 500)
       end
 
+      logger Rails.logger.dup
+      logger.formatter = GrapeLogging::Formatters::Rails.new
+      use GrapeLogging::Middleware::RequestLogger,
+        logger:    logger,
+        log_level: :info,
+        include:   [GrapeLogging::Loggers::Response.new,
+                    GrapeLogging::Loggers::FilterParameters.new,
+                    GrapeLogging::Loggers::ClientEnv.new,
+                    GrapeLogging::Loggers::RequestHeaders.new]
+
       use UserApi::V1::CORS::Middleware
 
       mount UserApi::V1::Accounts
@@ -76,7 +86,7 @@ module UserApi
                                 mount_path: '/swagger_doc'
 
       route :any, '*path' do
-        raise StandardError, 'Unable to find endpoint'
+        error! 'Action is not found', 404
       end
     end
   end

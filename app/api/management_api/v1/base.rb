@@ -26,6 +26,16 @@ module ManagementAPI
         error!('Something wrong with 2FA', 422)
       end
 
+      logger Rails.logger.dup
+      logger.formatter = GrapeLogging::Formatters::Rails.new
+      use GrapeLogging::Middleware::RequestLogger,
+        logger:    logger,
+        log_level: :info,
+        include:   [GrapeLogging::Loggers::Response.new,
+                    GrapeLogging::Loggers::FilterParameters.new,
+                    GrapeLogging::Loggers::ClientEnv.new,
+                    GrapeLogging::Loggers::RequestHeaders.new]
+
       use ManagementAPI::V1::JWTAuthenticationMiddleware
 
       mount ManagementAPI::V1::OTP
