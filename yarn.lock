@@ -144,8 +144,8 @@ jgexml@latest:
   resolved "https://registry.yarnpkg.com/jgexml/-/jgexml-0.3.8.tgz#f2d75f1f8b4a5f31e74c6d343cf2fe8229c4cf4e"
 
 jquery@*:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
 
 js-yaml@^3.6.1:
   version "3.10.0"
